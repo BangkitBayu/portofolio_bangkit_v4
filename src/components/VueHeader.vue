@@ -5,7 +5,7 @@ function switchTheme() {
 </script>
 <template>
   <div>
-    <header class=" sticky top-0 p-3 flex justify-around items-center bg-[#050813cb]">
+    <header class=" fixed w-full top-0 px-6 py-3 flex justify-between items-center bg-[#050813cb]">
       <div class="logo">
         <h1 class=" font-bold text-xl text-[#126de4]">Bangkit<span class=" font-extrabold text-white">.</span></h1>
       </div>
