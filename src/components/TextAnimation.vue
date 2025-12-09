@@ -2,7 +2,7 @@
 <template>
   <section class="animation mt-4">
     <div class="first">
-      <div class=" text-xl">Web-Developer</div>
+      <div class=" text-xl">Freelancer-Web-Developer</div>
     </div>
     <div class="second">
       <div class=" text-xl">App-Developer</div>

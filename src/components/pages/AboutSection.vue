@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import InfoBox from '../InfoBox.vue';
 import SkillMaster from '../SkillMaster.vue';
+import TitlePage from '../TitlePage.vue';
 </script>
 <template>
   <div id="about" class="flex flex-col min-h-screen items-center justify-center space-y-3 mt-36 lg:mt-0">
-    <h1 class=" text-[#126de4] font-bold text-3xl">About Me</h1>
+    <TitlePage title="About Me"></TitlePage>
     <div class="p-2 space-y-2">
       <p class=" text-lg text-[#a2a2a2] text-center">Hello, I'am Bangkit Bayu Prasetyo, a Software Engineering
         Student was have 1+ years experience in Programming World with strong experince in web development.</p>
