@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import TextAnimation from '../TextAnimation.vue';
+import avatar from "@/assets/img/avatar.png"
 </script>
 <template>
   <!-- <div class="flex flex-col lg:flex-row justify-between min-h-screen items-center"> -->
@@ -14,7 +15,7 @@ import TextAnimation from '../TextAnimation.vue';
         <a href="#projects">
           <button
             class="flex bg-[#ffffff] rounded-lg px-3 py-2 lg:px-6 lg:py-3 text-black justify-baseline items-center space-x-2
-                          hover:shadow-[0_0_10px_#126de4aa] hover:bg-[#126de4] hover:text-white transition delay-100 ease-in-out">
+                                hover:shadow-[0_0_10px_#126de4aa] hover:bg-[#126de4] hover:text-white transition delay-100 ease-in-out">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
               <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
                 <path
@@ -28,7 +29,7 @@ import TextAnimation from '../TextAnimation.vue';
         <a href="#">
           <button
             class="flex border rounded-lg px-3 py-2 lg:px-6 lg:py-3 text-[#8f8f8f] justify-baseline items-center space-x-2
-                          hover:border-[#126de4] hover:text-[#126de4] hover:bg-[#062348eb] transition delay-75 ease-in-out">
+                                hover:border-[#126de4] hover:text-[#126de4] hover:bg-[#062348eb] transition delay-75 ease-in-out">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
               <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                 d="M4 16.004V17a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1M12 4.5v11m3.5-3.5L12 15.5L8.5 12" />
@@ -40,7 +41,7 @@ import TextAnimation from '../TextAnimation.vue';
     </div>
 
     <div class="mx-auto">
-      <img src="/public/image/avatar.png" class="max-w-[750px] max-h-[750px] w-full h-full" alt="avatar">
+      <img :src="avatar" class="max-w-[750px] max-h-[750px] w-full h-full" alt="avatar">
     </div>
   </div>
 </template>
