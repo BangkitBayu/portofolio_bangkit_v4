@@ -5,6 +5,6 @@ const props = defineProps({
 </script>
 <template>
   <div>
-    <h1 class="text-[#126de4] font-bold text-3xl lg:text-4xl">{{ props.title }}</h1>
+    <h1 class=" text-brand font-bold text-3xl lg:text-6xl">{{ props.title }}</h1>
   </div>
 </template>
