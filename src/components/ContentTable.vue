@@ -6,7 +6,7 @@
   })
 </script>
 <template>
-  <div class=" relative border border-[#bdbdbd71] rounded-lg overflow-x-auto mt-4">
+  <div class=" relative border border-[#bdbdbd71] rounded-lg overflow-x-auto mt-4 w-full">
     <table class="">
       <thead class=" text-[#c4c4c4] font-extrabold text-left border-b border-[#bdbdbd71]">
         <tr>

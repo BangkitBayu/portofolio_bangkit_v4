@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import TitlePage from '../TitlePage.vue';
 import ContentTable from '../ContentTable.vue';
-import Form from '../Form.vue';
+import SendMessageForm from '../Form.vue';
 
 </script>
 <template>
-  <div id="contact" class=" flex flex-col min-h-screen items-center justify-center mt-36 lg:mt-0">
+  <div id="contact" class=" flex flex-col min-h-screen items-center justify-center mt-36 lg:mt-18">
     <h3 class=" text-primary font-semibold text:lg lg:text-2xl mt-2 text-center">Let's Connect!</h3>
     <TitlePage title="Contact Me"></TitlePage>
-    <div class="place-content-center place-items-center w-full mt-10 lg:mt-8 text-center lg:text-left space-y-5"
-      style="display: grid; grid-template-columns: repeat(auto-fill, minmax(500px , 1fr));">
+    <div class="w-full mt-10 text-center lg:text-left space-y-5 flex justify-around flex-col lg:flex-row">
       <div class=" flex flex-col">
         <div class=" max-w-90">
           <h3 class=" text-primary font-bold text-lg lg:text-2xl">Contact</h3>
@@ -124,7 +123,7 @@ import Form from '../Form.vue';
           <p class="text-sm font-normal text-secondary mt-2">You can also contact me through my <strong
               class=" text-primary">E-mail</strong> for chitchat or collaborate with me.</p>
         </div>
-        <Form></Form>
+        <SendMessageForm></SendMessageForm>
       </div>
     </div>
   </div>
