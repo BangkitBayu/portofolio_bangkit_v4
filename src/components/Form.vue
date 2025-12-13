@@ -1,20 +1,16 @@
 <script setup lang="ts">
 import useVuelidate from "@vuelidate/core"
 import { email, helpers, required } from "@vuelidate/validators"
-import nodemailer from "nodemailer"
-import { computed, reactive } from "vue"
+import { computed, reactive} from "vue"
 
 interface Message {
   fullName: string
-  from: string,
   to: string,
   subject: string,
   text: string
 }
-
 const newMessage = reactive<Message>({
   fullName: "",
-  from: "martinusmartinussaja@gmail.com",
   to: "",
   subject: "",
   text: ''
