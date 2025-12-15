@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
+
 const programmingIcon: Array<string> = [
   "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj4KCTxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgZmlsbD0ibm9uZSIgLz4KCTxwYXRoIGZpbGw9IiNlNDRmMjYiIGQ9Ik01LjkwMiAyNy4yMDFMMy42NTUgMmgyNC42OWwtMi4yNSAyNS4xOTdMMTUuOTg1IDMweiIgLz4KCTxwYXRoIGZpbGw9IiNmMTY2MmEiIGQ9Im0xNiAyNy44NThsOC4xNy0yLjI2NWwxLjkyMi0yMS41MzJIMTZ6IiAvPgoJPHBhdGggZmlsbD0iI2ViZWJlYiIgZD0iTTE2IDEzLjQwN2gtNC4wOWwtLjI4Mi0zLjE2NUgxNlY3LjE1MUg4LjI1bC4wNzQuODNsLjc1OSA4LjUxN0gxNnptMCA4LjAyN2wtLjAxNC4wMDRsLTMuNDQyLS45MjlsLS4yMi0yLjQ2NUg5LjIyMWwuNDMzIDQuODUybDYuMzMyIDEuNzU4bC4wMTQtLjAwNHoiIC8+Cgk8cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTUuOTg5IDEzLjQwN3YzLjA5MWgzLjgwNmwtLjM1OCA0LjAwOWwtMy40NDguOTN2My4yMTZsNi4zMzctMS43NTdsLjA0Ni0uNTIybC43MjYtOC4xMzdsLjA3Ni0uODN6bTAtNi4yNTZ2My4wOTFoNy40NjZsLjA2Mi0uNjk0bC4xNDEtMS41NjdsLjA3NC0uODN6IiAvPgo8L3N2Zz4=",
   "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48cGF0aCBmaWxsPSIjMTU3MmI2IiBkPSJNNS45MDIgMjcuMjAxTDMuNjU2IDJoMjQuNjg4bC0yLjI0OSAyNS4xOTdMMTUuOTg1IDMweiIvPjxwYXRoIGZpbGw9IiMzM2E5ZGMiIGQ9Im0xNiAyNy44NThsOC4xNy0yLjI2NWwxLjkyMi0yMS41MzJIMTZ6Ii8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE2IDEzLjE5MWg0LjA5bC4yODItMy4xNjVIMTZWNi45MzVoNy43NWwtLjA3NC44MjlsLS43NTkgOC41MThIMTZ6Ii8+PHBhdGggZmlsbD0iI2ViZWJlYiIgZD0ibTE2LjAxOSAyMS4yMThsLS4wMTQuMDA0bC0zLjQ0Mi0uOTNsLS4yMi0yLjQ2NUg5LjI0bC40MzMgNC44NTNsNi4zMzEgMS43NThsLjAxNS0uMDA0eiIvPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Im0xOS44MjcgMTYuMTUxbC0uMzcyIDQuMTM5bC0zLjQ0Ny45M3YzLjIxNmw2LjMzNi0xLjc1NmwuMDQ3LS41MjJsLjUzNy02LjAwN3oiLz48cGF0aCBmaWxsPSIjZWJlYmViIiBkPSJNMTYuMDExIDYuOTM1djMuMDkxSDguNTQ1bC0uMDYyLS42OTVsLS4xNDEtMS41NjdsLS4wNzQtLjgyOXpNMTYgMTMuMTkxdjMuMDkxaC0zLjM5OWwtLjA2Mi0uNjk1bC0uMTQtMS41NjdsLS4wNzQtLjgyOXoiLz48L3N2Zz4=",
@@ -25,6 +27,15 @@ const toolsIcon: Array<string> = [
   "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48cGF0aCBmaWxsPSIjZTY0YTE5IiBkPSJNMTMuMTcyIDIuODI4TDExLjc4IDQuMjJsMS45MSAxLjkxbDIgMkEyLjk4NiAyLjk4NiAwIDAgMSAyMCAxMC44MWEzLjI1IDMuMjUgMCAwIDEtLjMxIDEuMzFsMi4wNiAyYTIuNjggMi42OCAwIDAgMSAzLjM3LjU3YTIuODYgMi44NiAwIDAgMSAuODggMi4xMTdhMy4wMiAzLjAyIDAgMCAxLS44NTYgMi4xMDlBMi45IDIuOSAwIDAgMSAyMyAxOS44MWEyLjkzIDIuOTMgMCAwIDEtMi4xMy0uODdhMi42OTQgMi42OTQgMCAwIDEtLjU2LTMuMzhsLTItMi4wNmEzIDMgMCAwIDEtLjMxLjEyVjIwYTMgMyAwIDAgMSAxLjQ0IDEuMDlhMi45MiAyLjkyIDAgMCAxIC41NiAxLjcyYTIuODggMi44OCAwIDAgMS0uODc4IDIuMTI4YTIuOTggMi45OCAwIDAgMS0yLjA0OC44NzFhMi45ODEgMi45ODEgMCAwIDEtMi41MTQtNC43MTlBMyAzIDAgMCAxIDE2IDIwdi02LjM4YTIuOTYgMi45NiAwIDAgMS0xLjQ0LTEuMDlhMi45IDIuOSAwIDAgMS0uNTYtMS43MmEyLjkgMi45IDAgMCAxIC4zMS0xLjMxbC0zLjktMy45bC03LjU3OSA3LjU3MmE0IDQgMCAwIDAtLjAwMSA1LjY1OGwxMC4zNDIgMTAuMzQyYTQgNCAwIDAgMCA1LjY1NiAwbDEwLjM0NC0xMC4zNDRhNCA0IDAgMCAwIDAtNS42NTZMMTguODI4IDIuODI4YTQgNCAwIDAgMC01LjY1NiAwIi8+PC9zdmc+",
   "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTIuMDAxIDJjLTUuNTI1IDAtMTAgNC40NzUtMTAgMTBhOS45OSA5Ljk5IDAgMCAwIDYuODM3IDkuNDg4Yy41LjA4Ny42ODgtLjIxMy42ODgtLjQ3NmMwLS4yMzctLjAxMy0xLjAyNC0uMDEzLTEuODYyYy0yLjUxMi40NjMtMy4xNjItLjYxMi0zLjM2Mi0xLjE3NWMtLjExMy0uMjg4LS42LTEuMTc1LTEuMDI1LTEuNDEzYy0uMzUtLjE4Ny0uODUtLjY1LS4wMTMtLjY2MmMuNzg4LS4wMTMgMS4zNS43MjUgMS41MzggMS4wMjVjLjkgMS41MTIgMi4zMzcgMS4wODcgMi45MTIuODI1Yy4wODgtLjY1LjM1LTEuMDg3LjYzOC0xLjMzN2MtMi4yMjUtLjI1LTQuNTUtMS4xMTMtNC41NS00LjkzOGMwLTEuMDg4LjM4Ny0xLjk4NyAxLjAyNS0yLjY4N2MtLjEtLjI1LS40NS0xLjI3NS4xLTIuNjVjMCAwIC44MzctLjI2MyAyLjc1IDEuMDI0YTkuMyA5LjMgMCAwIDEgMi41LS4zMzdjLjg1IDAgMS43LjExMiAyLjUuMzM3YzEuOTEzLTEuMyAyLjc1LTEuMDI0IDIuNzUtMS4wMjRjLjU1IDEuMzc1LjIgMi40LjEgMi42NWMuNjM3LjcgMS4wMjUgMS41ODcgMS4wMjUgMi42ODdjMCAzLjgzOC0yLjMzNyA0LjY4OC00LjU2MiA0LjkzOGMuMzYyLjMxMi42NzUuOTEyLjY3NSAxLjg1YzAgMS4zMzctLjAxMyAyLjQxMi0uMDEzIDIuNzVjMCAuMjYyLjE4OC41NzQuNjg4LjQ3NEExMC4wMiAxMC4wMiAwIDAgMCAyMiAxMmMwLTUuNTI1LTQuNDc1LTEwLTEwLTEwIi8+PC9zdmc+",
 ]
+
+const marqueeKey = ref<number>(0);
+
+onMounted(() => {
+  // Memaksa re-render untuk memastikan animasi berjalan setelah hard refresh Vite/browser
+  setTimeout(() => {
+    marqueeKey.value += 1;
+  }, 100);
+});
 </script>
 <template>
   <div class=" relative rounded-lg overflow-x-auto w-full border border-github-border">
@@ -91,8 +102,8 @@ const toolsIcon: Array<string> = [
             </svg>
             <h3 class=" text-white text-lg md:text-xl lg:text-xl font-semibold ms-9">Programming Languanges</h3>
             <div class=" ms-10 mt-1">
-              <Vue3Marquee>
-                <img v-for="img in programmingIcon" :key="img" :src="img" class=" ms-1">
+              <Vue3Marquee :key="marqueeKey">
+                <img v-for="(icon , index) in programmingIcon" :key="index" :src="icon" class=" ms-1">
               </Vue3Marquee>
             </div>
           </div>
@@ -107,8 +118,8 @@ const toolsIcon: Array<string> = [
             </svg>
             <h3 class=" text-white text-lg md:text-xl lg:text-xl font-semibold ms-9">Technologies</h3>
             <div class=" ms-10 mt-1">
-              <Vue3Marquee>
-                <img v-for="img in techIcon" :key="img" :src="img" class=" ms-1">
+              <Vue3Marquee :key="marqueeKey">
+                <img v-for="(icon,index) in techIcon" :key="index" :src="icon" class=" ms-1">
               </Vue3Marquee>
             </div>
           </div>
@@ -123,8 +134,8 @@ const toolsIcon: Array<string> = [
             </svg>
             <h3 class=" text-white text-lg md:text-xl lg:text-xl font-semibold ms-9">Tools</h3>
             <div class=" ms-10 mt-1">
-              <Vue3Marquee>
-                <img v-for="img in toolsIcon" :key="img" :src="img" class=" ms-1">
+              <Vue3Marquee :key="marqueeKey">
+                <img v-for="(icon,index) in toolsIcon" :key="index" :src="icon" class=" ms-1">
               </Vue3Marquee>
             </div>
           </div>
