@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed, onMounted, ref } from 'vue';
+
 const programmingIcon: Array<string> = [
   "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj4KCTxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgZmlsbD0ibm9uZSIgLz4KCTxwYXRoIGZpbGw9IiNlNDRmMjYiIGQ9Ik01LjkwMiAyNy4yMDFMMy42NTUgMmgyNC42OWwtMi4yNSAyNS4xOTdMMTUuOTg1IDMweiIgLz4KCTxwYXRoIGZpbGw9IiNmMTY2MmEiIGQ9Im0xNiAyNy44NThsOC4xNy0yLjI2NWwxLjkyMi0yMS41MzJIMTZ6IiAvPgoJPHBhdGggZmlsbD0iI2ViZWJlYiIgZD0iTTE2IDEzLjQwN2gtNC4wOWwtLjI4Mi0zLjE2NUgxNlY3LjE1MUg4LjI1bC4wNzQuODNsLjc1OSA4LjUxN0gxNnptMCA4LjAyN2wtLjAxNC4wMDRsLTMuNDQyLS45MjlsLS4yMi0yLjQ2NUg5LjIyMWwuNDMzIDQuODUybDYuMzMyIDEuNzU4bC4wMTQtLjAwNHoiIC8+Cgk8cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTUuOTg5IDEzLjQwN3YzLjA5MWgzLjgwNmwtLjM1OCA0LjAwOWwtMy40NDguOTN2My4yMTZsNi4zMzctMS43NTdsLjA0Ni0uNTIybC43MjYtOC4xMzdsLjA3Ni0uODN6bTAtNi4yNTZ2My4wOTFoNy40NjZsLjA2Mi0uNjk0bC4xNDEtMS41NjdsLjA3NC0uODN6IiAvPgo8L3N2Zz4=",
   "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48cGF0aCBmaWxsPSIjMTU3MmI2IiBkPSJNNS45MDIgMjcuMjAxTDMuNjU2IDJoMjQuNjg4bC0yLjI0OSAyNS4xOTdMMTUuOTg1IDMweiIvPjxwYXRoIGZpbGw9IiMzM2E5ZGMiIGQ9Im0xNiAyNy44NThsOC4xNy0yLjI2NWwxLjkyMi0yMS41MzJIMTZ6Ii8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE2IDEzLjE5MWg0LjA5bC4yODItMy4xNjVIMTZWNi45MzVoNy43NWwtLjA3NC44MjlsLS43NTkgOC41MThIMTZ6Ii8+PHBhdGggZmlsbD0iI2ViZWJlYiIgZD0ibTE2LjAxOSAyMS4yMThsLS4wMTQuMDA0bC0zLjQ0Mi0uOTNsLS4yMi0yLjQ2NUg5LjI0bC40MzMgNC44NTNsNi4zMzEgMS43NThsLjAxNS0uMDA0eiIvPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Im0xOS44MjcgMTYuMTUxbC0uMzcyIDQuMTM5bC0zLjQ0Ny45M3YzLjIxNmw2LjMzNi0xLjc1NmwuMDQ3LS41MjJsLjUzNy02LjAwN3oiLz48cGF0aCBmaWxsPSIjZWJlYmViIiBkPSJNMTYuMDExIDYuOTM1djMuMDkxSDguNTQ1bC0uMDYyLS42OTVsLS4xNDEtMS41NjdsLS4wNzQtLjgyOXpNMTYgMTMuMTkxdjMuMDkxaC0zLjM5OWwtLjA2Mi0uNjk1bC0uMTQtMS41NjdsLS4wNzQtLjgyOXoiLz48L3N2Zz4=",
@@ -21,23 +23,47 @@ const techIcon: Array<string> = [
 
 const toolsIcon: Array<string> = [
   "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBmaWxsPSIjMjE5NmYzIiBkPSJNMTEuNSAxMS4xOVY0LjhMNy4zIDcuOTlNMS4xNyA2LjA3YS42LjYgMCAwIDEtLjAxLS44MUwyIDQuNDhjLjE0LS4xMy40OC0uMTguNzMgMGwyLjM5IDEuODNsNS41NS01LjA5Yy4yMi0uMjIuNjEtLjMyIDEuMDUtLjA4bDIuOCAxLjM0Yy4yNS4xNS40OS4zOC40OS44MXY5LjQ5YzAgLjI4LS4yLjU4LS40Mi43bC0zLjA4IDEuNDhjLS4yMi4wOS0uNjQgMC0uNzktLjE0TDUuMTEgOS42OWwtMi4zOCAxLjgzYy0uMjcuMTgtLjYuMTMtLjc0IDBsLS44NC0uNzdjLS4yMi0uMjMtLjItLjYxLjA0LS44NGwyLjEtMS45Ii8+PC9zdmc+",
+  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI1NiAyNTYiPjxnIGZpbGw9Im5vbmUiPjxyZWN0IHdpZHRoPSIyNTYiIGhlaWdodD0iMjU2IiBmaWxsPSIjZjRmMmVkIiByeD0iNjAiLz48cGF0aCBmaWxsPSIjMDczMDQyIiBkPSJNMTA3LjAyOCA0OC44MThoLTQ2LjI0Yy05LjIwOCAwLTE2Ljc3NyA3Ljg2Mi0xNi43NzcgMTcuNTk3Yy0uMzMgOS4zOTYgNi45MDcgMTcuMjU1IDE1Ljk1OSAxNy41OTZoNDcuNTUyeiIvPjxwYXRoIGZpbGw9IiM0Mjg1ZjQiIGQ9Ik0yMTEuODM1IDIwNS4zMDNINjAuNzg5Yy05LjM3NCAwLTE2Ljc3OC03Ljg1OC0xNi43NzgtMTcuNTk2VjY2LjI0N2MwIDkuNzM1IDcuNTY5IDE3LjU5NCAxNi43NzggMTcuNzY0SDE4Ny4zMlMyMTIgODEuNzkzIDIxMiAxMDEuMDk3djEwNC4yMDZ6Ii8+PHBhdGggZmlsbD0iIzM4NzBiMiIgZD0iTTE0MS40MTMgMTQzLjEyYzYuNzQ2LTUuMjk1IDguMDYyLTE1LjIwMyAyLjk2Ni0yMi4wMzhjLTIuOC0zLjc1OC03LjA3OC02LjE0OS0xMS42ODctNi4zMjFoLjQ5NGE2LjkgNi45IDAgMCAxIDIuNjM3IDB2LTkuNzM3YzAtMS4xOTYtLjQ5Ni0yLjIyMS0xLjQ4My0yLjczMmMtMS40ODItLjg1NS0zLjI5MS0uMzQyLTQuMTEzIDEuMTk1Yy0uMzMuNTEzLS40OTQgMS4wMjUtLjMzIDEuNzA4djkuOTA3Yy04LjIyNiAxLjM2Ny0xMy45ODUgOS4zOTctMTIuNjcyIDE4LjExMXYuMTdjLjY2MSA0LjEgMi44MDIgNy44NTkgNi4wOTEgMTAuMjVsLTI3LjgwNyA2MS44NDFoMTguMWwxMi44MzItMjguMzU4YzEuNDg0LTMuNDE4IDUuNDMxLTQuOTU0IDguODg2LTMuMjQ2YzEuMzE5LjY4NCAyLjQ2OCAxLjg3OSAzLjEyNiAzLjI0NmwxMy4zMyAyOC4zNThoMTguNDI2em0tOS4zNzctMi43MzNjLTUuMjY2IDAtOS4zNzktNC40NDItOS4zNzktOS45MDdjMC01LjQ2OSA0LjI3OC05LjczOSA5LjU0Mi05LjU2OWMyLjQ2OCAwIDQuNjExIDEuMDI2IDYuNDE4IDIuNzM2YzMuNzg0IDMuNzU2IDMuNzg0IDkuOTA3LjE2NCAxMy44MzZjLTEuNjQ0IDEuNzA5LTQuMTE0IDIuOTA0LTYuNzQ1IDIuOTA0Ii8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTk2Ljk5MiA1Ny4zNjNoNjQuODI2djEyLjI5OUg5Ni45OTJ6Ii8+PHBhdGggZmlsbD0iIzA3MzA0MiIgZD0iTTEyNy4xIDEyMC43NDFjNS4wOTkgMCA5LjM4IDQuNDQyIDkuMjE2IDkuOTA4YzAgNS4yOTYtNC4yOCA5LjczOC05LjU0NiA5LjU2N2MtNS4wOTkgMC05LjIxNC00LjQ0MS05LjIxNC05LjczNmMwLTIuNTYzLjk4Ni00Ljk1NiAyLjgwMS02LjgzM2MxLjgwNy0xLjg4MSA0LjI3My0yLjkwNiA2Ljc0My0yLjkwNm0zLjYyLTUuNjM5di0xMC4yNDljMC0xLjE5Ni0uNDkzLTIuMjItMS40OC0yLjczNGMtMS40OC0uODU0LTMuMjkxLS4zNDEtNC4xMTcgMS4xOTdjLS4zMy41MTItLjQ5MyAxLjAyNS0uMzMgMS43MDh2OS45MDljLTguMjI2IDEuMzY1LTEzLjk4NSA5LjM5Ny0xMi42NjQgMTguMTA5di4xNzFjLjY1OSA0LjA5NyAyLjc5NSA3Ljg1NyA2LjA4NiAxMC4yNDdsLTM1LjA0NiA3OC4wNzJjLTEuMzE1IDIuNzM2LTEuMTUxIDYuMTUuNjU5IDguNzEzYzIuNjI5IDMuOTI4IDcuNzM0IDQuOTUzIDExLjUxNCAyLjIyMWMxLjMyLS44NTUgMi4zMDctMi4yMjEgMi45NjQtMy41ODhsMjMuMzY1LTUxLjkzNGMxLjQ4LTMuNDE2IDUuNDI5LTQuOTU0IDguODg1LTMuMjQ2YzEuMzE2LjY4NCAyLjQ2NiAxLjg4MSAzLjEyNSAzLjI0NmwyMy44NTggNTEuNDIyYzEuOTc3IDQuMjcgNi45MSA1Ljk3OCAxMS4wMjcgMy45MjdjNC4xMS0yLjA0OCA1Ljc1Ny03LjE3NCAzLjc4MS0xMS40NDVsLTM2LjAzMS03Ny43MjhjNi41OC01LjQ2OCA3LjczMy0xNS41NDUgMi40NjUtMjIuMzc5Yy0xLjk3MS0yLjczNC00Ljc3LTQuNjEzLTguMDYxLTUuNjM5Ii8+PHBhdGggZmlsbD0iIzNkZGM4NCIgZD0iTTE1Mi4yNzYgNjguMjk2Yy0yLjQ3MSAwLTQuNDQ1LTEuODgxLTQuNDQ1LTQuNDQyYzAtMS4xOTYuNDkyLTIuNTYyIDEuMzE1LTMuNDE3YzEuODExLTEuNzA3IDQuNDQ1LTEuNzA3IDYuMjU1IDBhNC43NyA0Ljc3IDAgMCAxIDEuMzE1IDMuMjQ2Yy0uMTY0IDIuNTYzLTEuOTc0IDQuNDQyLTQuNDQgNC42MTNtLTQ4LjcwNC0uMTcxYy0yLjQ3MiAwLTQuNDQzLTIuMDUtNC40NDMtNC40NDJjMC0xLjE5Ni40OTUtMi4zOTEgMS4zMTQtMy4yNDZjMS40ODItMS44NzggNC4yODMtMi4yMjEgNi4wOS0uNjgxaC4xNjVjMS44MDggMS43MDcgMS45NzIgNC42MS4zMyA2LjQ5bC0uNDk1LjY4MWMtLjgyMS44NTUtMS45NzEgMS4zNjktMy4xMjcgMS4zNjl6bTUwLjAxOS0yNy41MDVsOC43Mi0xNS43MTZjLjQ5My0uODU0LjE2NC0xLjg3OS0uNDkzLTIuNTYyYy0uODIzLS4zNDItMS42NDQtLjE3MS0yLjEzNy41MTNsLTkuMDUyIDE2LjIyOGMtMTQuNDc4LTYuNjYyLTMwLjkzMS02LjY2Mi00NS4yNDYgMGwtOC44ODUtMTYuMDU4Yy0uMzMtLjUxMi0uOTktMS4wMjUtMS42NS0xLjAyNWMtLjY1NiAwLTEuMzE1LjM0Mi0xLjY0NiAxLjAyNWMtLjMyOC41MTMtLjMyOCAxLjM2NiAwIDEuODc5bDguODg4IDE1LjcxNmMtMTUuNDcgOC43MS0yNS41MDUgMjUuMTE0LTI2Ljk4MiA0My4yMjFoMTA1LjYyOWMtMS4zMTMtMTguMjc3LTExLjUxNi0zNC41MTEtMjYuOTgyLTQzLjIyMSIvPjxwYXRoIGZpbGw9IiMwNzMwNDIiIGQ9Ik0xOTcuMzcgMTE3LjgzOWgtNi45MTFjLS4zMzEuMTY4LS42NTkuNTEtLjY1OSAxLjAyMnYxMTMuNjA1YzAgLjUxMS4zMjguODUzLjgyNS44NTNoNy4yMzhjOC4zOTEgMCAxNS4xMzctNy4xNzYgMTUuMTM3LTE1LjcxNlYxMDEuOTVjMCA4LjcxMi02Ljc0NiAxNS43MTctMTUuMTM3IDE1LjcxN2gtLjQ5M3oiLz48L2c+PC9zdmc+",
   "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48cGF0aCBmaWxsPSIjZjQ1MTFlIiBkPSJNMTIgNGg0djhoLTRhNCA0IDAgMCAxLTQtNGE0IDQgMCAwIDEgNC00Ii8+PHBhdGggZmlsbD0iI2ZmOGE2NSIgZD0iTTIwIDEyaC00VjRoNGE0IDQgMCAwIDEgNCA0YTQgNCAwIDAgMS00IDQiLz48cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB4PSIxNiIgeT0iMTIiIGZpbGw9IiMyOWI2ZjYiIHJ4PSI0IiB0cmFuc2Zvcm09InJvdGF0ZSgxODAgMjAgMTYpIi8+PHBhdGggZmlsbD0iIzdjNGRmZiIgZD0iTTEyIDEyaDR2OGgtNGE0IDQgMCAwIDEtNC00YTQgNCAwIDAgMSA0LTQiLz48cGF0aCBmaWxsPSIjMDBlNjc2IiBkPSJNMTIgMjBoNHY0YTQgNCAwIDAgMS00IDRhNCA0IDAgMCAxLTQtNGE0IDQgMCAwIDEgNC00Ii8+PC9zdmc+",
   "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDMyIDMyIj48cGF0aCBmaWxsPSIjZTY0YTE5IiBkPSJNMTMuMTcyIDIuODI4TDExLjc4IDQuMjJsMS45MSAxLjkxbDIgMkEyLjk4NiAyLjk4NiAwIDAgMSAyMCAxMC44MWEzLjI1IDMuMjUgMCAwIDEtLjMxIDEuMzFsMi4wNiAyYTIuNjggMi42OCAwIDAgMSAzLjM3LjU3YTIuODYgMi44NiAwIDAgMSAuODggMi4xMTdhMy4wMiAzLjAyIDAgMCAxLS44NTYgMi4xMDlBMi45IDIuOSAwIDAgMSAyMyAxOS44MWEyLjkzIDIuOTMgMCAwIDEtMi4xMy0uODdhMi42OTQgMi42OTQgMCAwIDEtLjU2LTMuMzhsLTItMi4wNmEzIDMgMCAwIDEtLjMxLjEyVjIwYTMgMyAwIDAgMSAxLjQ0IDEuMDlhMi45MiAyLjkyIDAgMCAxIC41NiAxLjcyYTIuODggMi44OCAwIDAgMS0uODc4IDIuMTI4YTIuOTggMi45OCAwIDAgMS0yLjA0OC44NzFhMi45ODEgMi45ODEgMCAwIDEtMi41MTQtNC43MTlBMyAzIDAgMCAxIDE2IDIwdi02LjM4YTIuOTYgMi45NiAwIDAgMS0xLjQ0LTEuMDlhMi45IDIuOSAwIDAgMS0uNTYtMS43MmEyLjkgMi45IDAgMCAxIC4zMS0xLjMxbC0zLjktMy45bC03LjU3OSA3LjU3MmE0IDQgMCAwIDAtLjAwMSA1LjY1OGwxMC4zNDIgMTAuMzQyYTQgNCAwIDAgMCA1LjY1NiAwbDEwLjM0NC0xMC4zNDRhNCA0IDAgMCAwIDAtNS42NTZMMTguODI4IDIuODI4YTQgNCAwIDAgMC01LjY1NiAwIi8+PC9zdmc+",
   "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTIuMDAxIDJjLTUuNTI1IDAtMTAgNC40NzUtMTAgMTBhOS45OSA5Ljk5IDAgMCAwIDYuODM3IDkuNDg4Yy41LjA4Ny42ODgtLjIxMy42ODgtLjQ3NmMwLS4yMzctLjAxMy0xLjAyNC0uMDEzLTEuODYyYy0yLjUxMi40NjMtMy4xNjItLjYxMi0zLjM2Mi0xLjE3NWMtLjExMy0uMjg4LS42LTEuMTc1LTEuMDI1LTEuNDEzYy0uMzUtLjE4Ny0uODUtLjY1LS4wMTMtLjY2MmMuNzg4LS4wMTMgMS4zNS43MjUgMS41MzggMS4wMjVjLjkgMS41MTIgMi4zMzcgMS4wODcgMi45MTIuODI1Yy4wODgtLjY1LjM1LTEuMDg3LjYzOC0xLjMzN2MtMi4yMjUtLjI1LTQuNTUtMS4xMTMtNC41NS00LjkzOGMwLTEuMDg4LjM4Ny0xLjk4NyAxLjAyNS0yLjY4N2MtLjEtLjI1LS40NS0xLjI3NS4xLTIuNjVjMCAwIC44MzctLjI2MyAyLjc1IDEuMDI0YTkuMyA5LjMgMCAwIDEgMi41LS4zMzdjLjg1IDAgMS43LjExMiAyLjUuMzM3YzEuOTEzLTEuMyAyLjc1LTEuMDI0IDIuNzUtMS4wMjRjLjU1IDEuMzc1LjIgMi40LjEgMi42NWMuNjM3LjcgMS4wMjUgMS41ODcgMS4wMjUgMi42ODdjMCAzLjgzOC0yLjMzNyA0LjY4OC00LjU2MiA0LjkzOGMuMzYyLjMxMi42NzUuOTEyLjY3NSAxLjg1YzAgMS4zMzctLjAxMyAyLjQxMi0uMDEzIDIuNzVjMCAuMjYyLjE4OC41NzQuNjg4LjQ3NEExMC4wMiAxMC4wMiAwIDAgMCAyMiAxMmMwLTUuNTI1LTQuNDc1LTEwLTEwLTEwIi8+PC9zdmc+",
 ]
+
+const marqueeKey = ref<number>(0);
+
+onMounted(() => {
+  // Memaksa re-render untuk memastikan animasi berjalan setelah hard refresh Vite/browser
+  setTimeout(() => {
+    marqueeKey.value += 1;
+  }, 100);
+});
+
+const startYear = ref<number>(2024);
+const oldYearStart = ref<number>(15);
+const yearExperience = computed(() => {
+  return new Date().getFullYear() - startYear.value;
+})
+
+const currentOldYear = computed(() => {
+  return oldYearStart.value + yearExperience.value
+})
+
 </script>
 <template>
-  <div class=" relative rounded-lg overflow-x-auto w-full border border-github-border">
+  <div class=" relative rounded-lg overflow-x-auto w-full shadow-2xl">
     <div
-      class=" relative px-4 py-3 flex bg-github-secondary border border-b-github-border space-x-2 items-center justify-between w-full">
+      class=" relative px-4 py-3 flex bg-github-secondary border border-github-border space-x-2 items-center justify-between w-full">
       <div class=" flex items-center space-x-2">
-        <div class=" border border-github-border p-1 rounded-sm">
-          <svg class=" text-github-border" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 15 15">
-            <rect width="15" height="15" fill="none" />
-            <path fill="currentColor"
-              d="M13.6 11.01a.5.5 0 0 1 0 .98l-.1.01h-12a.5.5 0 0 1 0-1h12zm0-4a.5.5 0 0 1 0 .98l-.1.01h-12a.5.5 0 0 1 0-1h12zm0-4a.5.5 0 0 1 0 .98l-.1.01h-12a.5.5 0 0 1 0-1h12z" />
-          </svg>
-        </div>
+        <a href="#about">
+          <div class=" border border-github-border p-1 rounded-sm cursor-pointer hover:bg-[#21262D]">
+            <svg class=" text-github-border" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+              viewBox="0 0 15 15">
+              <rect width="15" height="15" fill="none" />
+              <path fill="currentColor"
+                d="M13.6 11.01a.5.5 0 0 1 0 .98l-.1.01h-12a.5.5 0 0 1 0-1h12zm0-4a.5.5 0 0 1 0 .98l-.1.01h-12a.5.5 0 0 1 0-1h12zm0-4a.5.5 0 0 1 0 .98l-.1.01h-12a.5.5 0 0 1 0-1h12z" />
+            </svg>
+          </div>
+        </a>
         <svg class=" text-white" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
           <rect width="24" height="24" fill="none" />
           <path fill="currentColor"
@@ -47,23 +73,36 @@ const toolsIcon: Array<string> = [
       </div>
       <a href="#projects">
         <button
-          class="border border-[#238636] bg-[#0d5c1d] text-white font-medium text-sm px-2 py-1 lg:text-lg lg:px-3 lg:py-2 rounded-sm">Go
+          class="border border-[#238636] bg-[#0d5c1d] text-white font-medium text-sm px-2 py-1 lg:text-lg lg:px-3 lg:py-2 rounded-sm hover:bg-[#196c29] cursor-pointer">Go
           to project</button>
       </a>
     </div>
-    <div class=" bg-github-primary px-4 py-3 space-y-3 mt-2 relative w-full">
-      <div class=" space-y-2 mt-2 relative w-full">
+    <div class=" bg-github-primary px-4 py-3 space-y-3 relative w-full">
+      <p class=" text-primary font-medium font-mono mt-2">BangkitBayu / README<span class=" text-secondary">.md</span></p>
+      <h1 class=" text-white font-bold text-2xl lg:text-3xl mt-4">👨 About Me</h1>
+      <hr class=" text-github-border">
+      <section class=" space-y-2 mt-2 relative w-full">
+        <h3 class=" text-white text-lg md:text-xl lg:text-xl font-semibold">💬 Introduction</h3>
+        <hr class=" text-github-border">
+        <p class=" text-primary text-lg font-medium truncate-2 text-left">
+          Hello, I'am Bangkit Bayu Prasetyo as a Software Engineering
+          Student was have 1+ years experience in Programming World with strong experince in web development.In the
+          future,
+          I hope to be Profesional Software Engineer
+          with critical problem solving, good communication and make something impact in tech world.</p>
+      </section>
+      <section class=" space-y-2 mt-2 relative w-full">
         <h3 class=" text-white text-lg md:text-xl lg:text-xl font-semibold">📊 BangkitBayu Stats</h3>
         <hr class=" text-github-border">
         <div
           class=" flex flex-col md:flex-row lg:flex-row bg-accent rounded-sm p-4 w-full items-center justify-around space-y-2">
           <div class=" flex flex-col items-center justify-center p-1">
-            <h3 class=" text-brand font-semibold text-lg md:text-xl lg:text-2xl">1+</h3>
+            <h3 class=" text-brand font-semibold text-lg md:text-xl lg:text-2xl">{{ yearExperience }}+</h3>
             <p class=" text-primary font-normal text-sm md:text-lg lg:text-lg">Years Experience</p>
           </div>
           <hr class=" text-github-border w-full lg:-rotate-90 md:-rotate-90 lg:w-20 md:w-20">
           <div class=" flex flex-col items-center justify-center p-1">
-            <h3 class=" text-brand font-semibold text-lg md:text-xl lg:text-2xl">16</h3>
+            <h3 class=" text-brand font-semibold text-lg md:text-xl lg:text-2xl">{{ currentOldYear }}</h3>
             <p class=" text-primary font-normal text-sm md:text-lg lg:text-lg">Years Old</p>
           </div>
           <hr class=" text-github-border w-full lg:-rotate-90 md:-rotate-90 lg:w-20 md:w-20">
@@ -73,8 +112,8 @@ const toolsIcon: Array<string> = [
           </div>
           <hr class=" text-github-border w-full lg:-rotate-90 md:-rotate-90 lg:w-20 md:w-20 block md:hidden lg:hidden">
         </div>
-      </div>
-      <div class=" space-y-2">
+      </section>
+      <section class=" space-y-2">
         <h3 class=" text-white text-lg md:text-xl lg:text-xl font-semibold">⚙️ Skills & Tools</h3>
         <hr class=" text-github-border">
         <p class=" text-primary text-lg font-medium">It's all programming languanges, frameworks, libraries and tools I've
@@ -91,8 +130,8 @@ const toolsIcon: Array<string> = [
             </svg>
             <h3 class=" text-white text-lg md:text-xl lg:text-xl font-semibold ms-9">Programming Languanges</h3>
             <div class=" ms-10 mt-1">
-              <Vue3Marquee>
-                <img v-for="img in programmingIcon" :key="img" :src="img" class=" ms-1">
+              <Vue3Marquee :key="marqueeKey">
+                <img v-for="(icon , index) in programmingIcon" :key="index" :src="icon" class=" ms-1">
               </Vue3Marquee>
             </div>
           </div>
@@ -107,8 +146,8 @@ const toolsIcon: Array<string> = [
             </svg>
             <h3 class=" text-white text-lg md:text-xl lg:text-xl font-semibold ms-9">Technologies</h3>
             <div class=" ms-10 mt-1">
-              <Vue3Marquee>
-                <img v-for="img in techIcon" :key="img" :src="img" class=" ms-1">
+              <Vue3Marquee :key="marqueeKey">
+                <img v-for="(icon,index) in techIcon" :key="index" :src="icon" class=" ms-1">
               </Vue3Marquee>
             </div>
           </div>
@@ -123,13 +162,13 @@ const toolsIcon: Array<string> = [
             </svg>
             <h3 class=" text-white text-lg md:text-xl lg:text-xl font-semibold ms-9">Tools</h3>
             <div class=" ms-10 mt-1">
-              <Vue3Marquee>
-                <img v-for="img in toolsIcon" :key="img" :src="img" class=" ms-1">
+              <Vue3Marquee :key="marqueeKey">
+                <img v-for="(icon,index) in toolsIcon" :key="index" :src="icon" class=" ms-1">
               </Vue3Marquee>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   </div>
 </template>
