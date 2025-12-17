@@ -10,7 +10,7 @@ import SendMessageForm from '../Form.vue';
     <TitlePage title="Contact Me"></TitlePage>
     <div class="w-full mt-10 text-center lg:text-left space-y-5 flex justify-around flex-col lg:flex-row">
       <div class=" flex flex-col">
-        <div class=" max-w-90">
+        <div class="">
           <h3 class=" text-primary font-bold text-lg lg:text-2xl">Contact</h3>
           <p class="text-sm font-normal text-secondary mt-2">This part contains short information of me such as Address,
             E-mail and Mobile Phone.</p>

@@ -40,7 +40,7 @@ function switchTheme() {
           class="bg-accent relative text-primary rounded-2xl px-5 py-2 flex space-x-2 items-center group hover:bg-accent-50 md:hidden lg:hidden">
           <p>Menu</p>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-            :class="{'rotate-180 transition-transform delay-150 ease-in-out' : showNavbar, '-rotate-360 transition-transform delay-150 ease-in-out' : !showNavbar}">
+            :class="{'-rotate-360 transition-transform delay-150 ease-in-out' : showNavbar, 'rotate-180 transition-transform delay-150 ease-in-out' : !showNavbar}">
             <rect width="24" height="24" fill="none" />
             <path fill="currentColor"
               d="M3 19h18a1.002 1.002 0 0 0 .823-1.569l-9-13c-.373-.539-1.271-.539-1.645 0l-9 13A.999.999 0 0 0 3 19" />

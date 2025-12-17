@@ -6,15 +6,15 @@
   })
 </script>
 <template>
-  <div class=" relative border border-[#bdbdbd71] rounded-lg overflow-x-auto mt-4 w-full">
-    <table class="">
-      <thead class=" text-[#c4c4c4] font-extrabold text-left border-b border-[#bdbdbd71]">
+  <div class=" relative border border-third rounded-lg overflow-x-auto mt-4 w-full">
+    <table class=" w-full table-auto">
+      <thead class=" text-[#c4c4c4] font-extrabold text-left border-b border-third">
         <tr>
           <th scope="col" class="px-8 py-2 text-sm font-extrabold">Contact</th>
           <th scope="col" class="px-8 py-2 text-sm font-extrabold">Detail</th>
         </tr>
       </thead>
-      <tbody class=" text-[#bdbdbdb3] font-medium text-left">
+      <tbody class=" text-third-50 font-medium text-left">
         <tr>
           <td scope="row" class="px-8 py-2 font-normal text-sm">Address</td>
           <td scope="row" class="px-8 py-2 font-normal text-sm" >Trenggalek, Jawa Timur, Indonesia</td>

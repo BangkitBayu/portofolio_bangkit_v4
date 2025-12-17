@@ -15,8 +15,7 @@ const techStacksGogreenWebsite: Array<string> = ["PHP", "Tailwind", "Jquery", "M
 <template>
   <div id="projects" class="flex flex-col min-h-screen items-center justify-center space-y-6 mt-36 lg:mt-0">
     <TitlePage title="Projects"></TitlePage>
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));"
-      class=" w-full max-w-[980px] gap-y-5 place-content-center place-items-center">
+    <div class=" w-full flex flex-wrap items-baseline justify-center space-x-4 space-y-5 lg:space-y-3">
       <CardItem title="My Porfolio Website" :image-path="project_img_1"
         description="This is my place to showcase about myself and my skill." :tech-stacks="techStacksPortofolioWebsite"
         status="Completed" :live-available="true"></CardItem>

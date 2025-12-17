@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import TitlePage from '../TitlePage.vue';
 import GithubProfile from '../GithubProfile.vue';
 </script>
 <template>
