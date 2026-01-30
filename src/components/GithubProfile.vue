@@ -40,12 +40,12 @@ onMounted(() => {
 
 const startYear = ref<number>(2024);
 const oldYearStart = ref<number>(15);
-const yearExperience = computed(() => {
+const workExperience = computed(() => {
   return new Date().getFullYear() - startYear.value;
 })
 
 const currentOldYear = computed(() => {
-  return oldYearStart.value + yearExperience.value
+  return oldYearStart.value + workExperience.value
 })
 
 </script>
@@ -84,12 +84,12 @@ const currentOldYear = computed(() => {
       <section class=" space-y-2 mt-2 relative w-full">
         <h3 class=" text-white text-lg md:text-xl lg:text-xl font-semibold">💬 Introduction</h3>
         <hr class=" text-github-border">
-        <p class=" text-primary text-lg font-medium truncate-2 text-left">
-          Hello, I'am Bangkit Bayu Prasetyo as a Software Engineering
-          Student was have 1+ years experience in Programming World with strong experince in web development.In the
-          future,
-          I hope to be Profesional Software Engineer
-          with critical problem solving, good communication and make something impact in tech world.</p>
+        <p class=" text-primary text-lg font-medium text-left ">
+          Hello,iam Bangkit Bayu Prasetyo, a Software Engineering student at vocational school.I have enthusiastic in tech
+          and bussines, alongside innovative and love to learn.Beside as student,currently i work as Software Engineer and
+          Fullstack Developer at Goloka.my.id.
+          I also passionate in content creating to share programing tips or just tell my experience.
+        </p>
       </section>
       <section class=" space-y-2 mt-2 relative w-full">
         <h3 class=" text-white text-lg md:text-xl lg:text-xl font-semibold">📊 BangkitBayu Stats</h3>
@@ -97,8 +97,8 @@ const currentOldYear = computed(() => {
         <div
           class=" flex flex-col md:flex-row lg:flex-row bg-accent rounded-sm p-4 w-full items-center justify-around space-y-2">
           <div class=" flex flex-col items-center justify-center p-1">
-            <h3 class=" text-brand font-semibold text-lg md:text-xl lg:text-2xl">{{ yearExperience }}+</h3>
-            <p class=" text-primary font-normal text-sm md:text-lg lg:text-lg">Years Experience</p>
+            <h3 class=" text-brand font-semibold text-lg md:text-xl lg:text-2xl">{{ workExperience }}+</h3>
+            <p class=" text-primary font-normal text-sm md:text-lg lg:text-lg">Work Experience</p>
           </div>
           <hr class=" text-github-border w-full lg:-rotate-90 md:-rotate-90 lg:w-20 md:w-20">
           <div class=" flex flex-col items-center justify-center p-1">
