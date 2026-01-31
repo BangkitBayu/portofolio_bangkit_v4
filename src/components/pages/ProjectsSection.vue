@@ -1,29 +1,73 @@
 <script setup lang="ts">
+
+import Autoplay from 'embla-carousel-autoplay'
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+
 import TitlePage from '../TitlePage.vue';
 import CardItem from '../CardItem.vue';
 
 // IMPORT RESOURCE
 import project_img_1 from '@/assets/img/portofolio_bangkit.png';
 import project_img_2 from '@/assets/img/netflash.jpg';
-import project_img_3 from '@/assets/img/gogreen.png';
+import project_img_3 from '@/assets/img/goloka_company_profile.png';
 
+const projectsCollection = [
+  {
+    "title": "Netflashz Website",
+    "description": "Netflashz is an all in one topup platfrom. On this project I was responsible for back-end.",
+    "image": project_img_2,
+    "techStacks": ["PHP", "Bootstrap", "Mysql", "Tripay Payment"],
+    "liveAvailable": false
+  },
+  {
+    "title": "Goloka Company Profile Website",
+    "description": "Goloka is a Start-up company have focused on UMKM bussines, with aim to elevate their bussines. ",
+    "image": project_img_3,
+    "techStacks": ["HTML", "Taiwind CSS"],
+    "liveAvailable": true,
+    "liveUrl": "https://bangkitbayu.github.io/goloka-company-profile/"
+  },
+  {
+    "title": "Bangkit Portofolio Website",
+    "description": "Bangkit Portofolio is a place to personal branding and showcase my projects and skills.",
+    "image": project_img_1,
+    "techStacks": ["VueJS 3", "Taiwind CSS"],
+    "liveAvailable": true,
+    "liveUrl": "https://bangkitbayu.vercel.app"
+  },
+]
 
-const techStacksPortofolioWebsite: Array<string> = ["VueJS 3", "Taiwind CSS"]
-const techStacksNetflashzWebsite: Array<string> = ["PHP", "Bootstrap", "Jquery", "Mysql", "Tripay Payment"]
-const techStacksGogreenWebsite: Array<string> = ["PHP", "Tailwind", "Jquery", "Mysql"]
+const plugin = Autoplay({
+  delay: 2000,
+  stopOnMouseEnter: true,
+  stopOnInteraction: false,
+})
+
 </script>
 <template>
-  <div id="projects" class="flex flex-col min-h-screen items-center justify-center space-y-6 mt-36 lg:mt-0">
+  <div id="projects" class=" min-w-full flex flex-col min-h-screen items-center justify-center space-y-6 mt-36 lg:mt-0">
     <TitlePage title="Projects"></TitlePage>
-    <div class=" w-full flex flex-wrap items-baseline justify-center space-x-4 space-y-5 lg:space-y-3">
-      <CardItem title="My Porfolio Website" :image-path="project_img_1"
-        description="This is my place to showcase about myself and my skill." :tech-stacks="techStacksPortofolioWebsite"
-        status="Completed" :live-available="true"></CardItem>
-      <CardItem title="Netflashz Topup" :image-path="project_img_2"
-        description="Netflashz is a client project to available Topup platform with complete service."
-        :tech-stacks="techStacksNetflashzWebsite" status="Completed" :live-available="false"></CardItem>
-      <CardItem title="GoGreen" description="GoGreen is a website give educational to people about environment."
-        :image-path="project_img_3" :tech-stacks="techStacksGogreenWebsite"></CardItem>
+
+    <!-- Carousel in mobile -->
+    <Carousel class="relative w-full max-w-xs lg:hidden" :plugins="[plugin]" @mouseenter="plugin.stop"
+      @mouseleave="[plugin.reset(), plugin.play(), console.log('Running')];">
+      <CarouselContent class="p-1">
+        <CarouselItem v-for="(project, index) in projectsCollection" :key="index">
+          <CardItem :id="index" :title="project.title" :description="project.description" :image-path="project.image"
+            :live-available="project.liveAvailable" :tech-stacks="project.techStacks" :live-url="project.liveUrl">
+          </CardItem>
+        </CarouselItem>
+      </CarouselContent>
+    </Carousel>
+    <!-- <CarouselPrevious></CarouselPrevious>
+                            <CarouselNext></CarouselNext> -->
+    <!-- </div> -->
+    <div class=" hidden lg:block w-full">
+      <div class=" grid grid-cols-3 gap-3 place-items-center">
+        <CardItem v-for="(project, index) in projectsCollection" :key="index" :id="index" :title="project.title"
+          :description="project.description" :image-path="project.image" :live-available="project.liveAvailable"
+          :tech-stacks="project.techStacks" :live-url="project.liveUrl"></CardItem>
+      </div>
     </div>
   </div>
 </template>
