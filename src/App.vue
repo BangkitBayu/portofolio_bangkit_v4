@@ -8,4 +8,3 @@ import VueMain from './components/VueMain.vue';
   <VueMain></VueMain>
 </template>
 
-<style scoped></style>
