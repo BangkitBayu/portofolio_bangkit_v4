@@ -4,8 +4,19 @@ import Button from '@/components/Button.vue';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import SectionTitle from '@/components/SectionTitle.vue';
+import gsap from 'gsap';
 
 import projectPhoto1 from '@/assets/img/netflash.jpg'
+import { onMounted } from 'vue';
+
+onMounted(() => {
+  gsap.to(".card", {
+    y: -20,
+    duration: 2,
+    ease: "power1.in",
+    stagger: 0.1
+  })
+})
 
 const goToContactSection = (() => {
   window.location.href = "#contact"
@@ -40,7 +51,8 @@ const goToContactSection = (() => {
           <SectionTitle :label="'Featured Projects'"></SectionTitle>
           <div class="display-projects w-full px-5 mt-10">
             <router-link to="/projects">
-              <div class=" card max-w-[400px] border border-white/10 shadow-sm rounded-xl group overflow-hidden absolute bottom-0">
+              <div
+                class=" card max-w-[400px] border border-white/10 shadow-sm rounded-xl group overflow-hidden absolute bottom-0">
                 <img :src="projectPhoto1" alt="project photo 1" class=" card-thumbnail w-full rounded-xl">
                 <div class=" card-body flex flex-col mx-auto px-4 py-2">
                   <h1 class=" text-2xl text-white/80 font-bold">Netflash</h1>
@@ -66,7 +78,8 @@ const goToContactSection = (() => {
               </div>
             </router-link>
             <router-link to="/projects">
-              <div class=" card max-w-[400px] border border-white/10 shadow-sm rounded-xl group overflow-hidden absolute bottom-5">
+              <div
+                class=" card max-w-[400px] border border-white/10 shadow-sm rounded-xl group overflow-hidden absolute bottom-5">
                 <img :src="projectPhoto1" alt="project photo 1" class=" card-thumbnail w-full rounded-xl">
                 <div class=" card-body flex flex-col mx-auto px-4 py-2">
                   <h1 class=" text-2xl text-white/80 font-bold">Netflash</h1>
