@@ -36,7 +36,7 @@ const goToContactSection = (() => {
       <Header></Header>
     </template>
     <template #main>
-      <main>
+      <main class=" mb-10">
         <section class="flex flex-col min-h-screen items-center justify-center lg:mt-0 hero-gradient">
           <div class=" flex justify-center items-center flex-col mx-auto space-y-3">
             <h1 class=" text-white font-bold text-2xl lg:text-5xl">Hello, I'am <span
