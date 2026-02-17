@@ -10,11 +10,18 @@ import projectPhoto1 from '@/assets/img/netflash.jpg'
 import { onMounted } from 'vue';
 
 onMounted(() => {
-  gsap.to(".card", {
-    y: -20,
+  gsap.from(".card", {
+    scrollTrigger: {
+      trigger: ".display-projects",
+      start: "top bottom",
+      toggleActions: "play none none reverse",
+      // markers: true
+    },
+    opacity: 0,
+    yPercent: 100,
     duration: 2,
-    ease: "power1.in",
-    stagger: 0.1
+    ease: "power4.out",
+    stagger: 0.2,
   })
 })
 
@@ -79,7 +86,7 @@ const goToContactSection = (() => {
             </router-link>
             <router-link to="/projects">
               <div
-                class=" card max-w-[400px] border border-white/10 shadow-sm rounded-xl group overflow-hidden absolute bottom-5">
+                class=" card max-w-[400px] border border-white/10 shadow-sm rounded-xl group overflow-hidden absolute bottom-8">
                 <img :src="projectPhoto1" alt="project photo 1" class=" card-thumbnail w-full rounded-xl">
                 <div class=" card-body flex flex-col mx-auto px-4 py-2">
                   <h1 class=" text-2xl text-white/80 font-bold">Netflash</h1>
