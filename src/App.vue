@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import VueHeader from './components/VueHeader.vue';
-import VueMain from './components/VueMain.vue';
+import Home from './components/pages/Home.vue';
 </script>
 
 <template>
-  <VueHeader></VueHeader>
-  <VueMain></VueMain>
+  <Home></Home>
 </template>
 
