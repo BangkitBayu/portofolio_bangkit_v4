@@ -21,16 +21,21 @@ function switchTheme() {
       </div>
       <nav class="hidden md:block lg:block">
         <ul class="flex text-sm space-x-4 items-center justify-center">
-          <li><a href="#" class="  text-secondary font-medium hover:text-brand transition delay-75 ease-in-out">Home</a>
+          <li>
+            <router-link :to="{name: 'home'}"
+              class="  text-secondary font-medium hover:text-brand transition delay-75 ease-in-out">Home</router-link>
           </li>
-          <li><a href="#about"
-              class="  text-secondary font-medium hover:text-brand transition delay-75 ease-in-out">About</a>
+          <li>
+            <router-link to="/about"
+              class="  text-secondary font-medium hover:text-brand transition delay-75 ease-in-out">About</router-link>
           </li>
-          <li><a href="#projects"
-              class="  text-secondary font-medium hover:text-brand transition delay-75 ease-in-out">Projects</a>
+          <li>
+            <router-link to="/projects"
+              class=" text-secondary font-medium hover:text-brand transition delay-75 ease-in-out">Projects</router-link>
           </li>
-          <li><a href="#contact"
-              class="  text-secondary font-medium hover:text-brand transition delay-75 ease-in-out">Contact</a>
+          <li>
+            <router-link to="/contact"
+              class="  text-secondary font-medium hover:text-brand transition delay-75 ease-in-out">Contact</router-link>
           </li>
         </ul>
       </nav>
