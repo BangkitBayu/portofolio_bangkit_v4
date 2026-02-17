@@ -14,8 +14,8 @@ function switchTheme() {
 </script>
 <template>
   <div>
-    <header class=" fixed w-full top-0 px-6 py-4 flex justify-between items-center z-10"
-      :class="{' backdrop-blur-3xl transition-colors delay-150 ease-in bg-[#0c183ab6]' : y > 100 , 'transition-colors delay-150 ease-out bg-transparent' : y < 100}">
+    <header class=" fixed w-full top-0 px-6 py-3 flex justify-between items-center z-10"
+      :class="{' border-b border-[#434343] backdrop-blur-xl bg-[#171717d4]' : y > 100 , 'transition-colors delay-150 ease-out bg-transparent' : y < 100}">
       <div class="logo">
         <h1 class=" font-bold text-xl lg:text-2xl text-brand"><a href="#">Bangkit</a></h1>
       </div>
